@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo shrunk into the adaptive-icon safe zone (the launcher masks the outer edge of the 108dp canvas). -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/drjk_logo"
+    android:inset="20%" />

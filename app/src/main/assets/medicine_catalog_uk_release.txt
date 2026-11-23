@@ -1,0 +1,4 @@
+NHSBSA dm+d 11.1.0
+Release date: 2026-11-09
+Source archive: nhsbsa_dmd_11.1.0_20261109000001.zip
+Compressed JSON asset: medicine_catalog_uk.json.gz

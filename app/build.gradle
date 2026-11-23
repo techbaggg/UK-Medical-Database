@@ -1,0 +1,84 @@
+plugins {
+    id 'com.android.application'
+}
+
+base {
+    archivesName = 'uk-medical-database'
+}
+
+def ksPropsFile = rootProject.file('keystore.properties')
+def ksProps = new Properties()
+if (ksPropsFile.exists()) ksPropsFile.withInputStream { ksProps.load(it) }
+def ksPath = System.getenv('KEYSTORE_PATH') ?: ksProps.getProperty('KEYSTORE_PATH') ?: 'drgenz-upload.jks'
+def ksPass = System.getenv('KEYSTORE_PASSWORD') ?: ksProps.getProperty('KEYSTORE_PASSWORD')
+def kAlias = System.getenv('KEY_ALIAS') ?: ksProps.getProperty('KEY_ALIAS')
+def kPass  = System.getenv('KEY_PASSWORD') ?: ksProps.getProperty('KEY_PASSWORD')
+def haveReleaseKey = rootProject.file(ksPath).exists() && ksPass != null && kAlias != null && kPass != null
+if (!haveReleaseKey && gradle.startParameter.taskNames.any { it.toLowerCase().contains('release') }) {
+    logger.warn('No release keystore configured.')
+}
+
+android {
+    namespace = 'com.drgenz'
+    compileSdk = 36
+
+    defaultConfig {
+        applicationId = 'com.drgenz.ukmeddb'
+        minSdk = 26
+        targetSdk = 36
+        versionCode = 1
+        versionName = '1.0.0'
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    signingConfigs {
+        release {
+            if (haveReleaseKey) {
+                storeFile = rootProject.file(ksPath)
+                storePassword = ksPass
+                keyAlias = kAlias
+                keyPassword = kPass
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField 'boolean', 'LICENSE_ENFORCED', 'false'
+        }
+        release {
+            buildConfigField 'boolean', 'LICENSE_ENFORCED', 'false'
+            signingConfig = haveReleaseKey ? signingConfigs.release : signingConfigs.debug
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            output.outputFileName = (variant.buildType.name == 'debug') ? "UKMedicalDatabase-v${variant.versionName}-debug.apk" : "UKMedicalDatabase-v${variant.versionName}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.work:work-runtime:2.10.1' // for background offline database preparation
+    testImplementation 'junit:junit:4.13.2'
+}
+
+tasks.register('verifyReleaseSigning') {
+    doLast {
+        if (!haveReleaseKey) throw new GradleException('Release signing key missing.')
+    }
+}
+tasks.matching { it.name == 'packageRelease' || it.name == 'validateSigningRelease' || it.name == 'bundleRelease' }.configureEach { dependsOn('verifyReleaseSigning') }

@@ -1,0 +1,9 @@
+<resources>
+    <color name="navy">#123A63</color>
+    <color name="teal">#087F8C</color>
+    <color name="paper">#F4F7FA</color>
+    <color name="ink">#17324D</color>
+    <color name="muted">#617387</color>
+    <color name="border">#B9C7D4</color>
+    <color name="ic_launcher_background">#F4F7FA</color>
+</resources>

@@ -1,0 +1,3 @@
+Put AppstoreAuthenticationKey.pem in this folder (same folder as this note).
+Download it from the Amazon Developer Console: My Apps > your app > upcoming version > Upload your app files > Additional information > View public key.
+It is a PUBLIC key, so it is safe to keep in the project.
