@@ -36,10 +36,15 @@ public class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle b) {
         super.onCreate(b);
-        teal = getColor(R.color.teal); navy = getColor(R.color.navy);
-        askWarmTts();
-        UkDmDManager.schedule(this);
-        showHome();
+        try {
+            teal = getColor(R.color.teal); navy = getColor(R.color.navy);
+            askWarmTts();
+            UkDmDManager.schedule(this);
+            showHome();
+        } catch (Throwable t) {
+            android.util.Log.e("DrGenZ", "Error in UK onCreate", t);
+            showHome();
+        }
     }
 
     // ---------------- Main Screen ----------------
@@ -358,7 +363,8 @@ public class MainActivity extends Activity {
     }
 
     void syncBack() {
-        boolean need = screenKind != 0;
+        if (Build.VERSION.SDK_INT < 33) return;
+        boolean need = !(screenKind == 0);
         if (need && backCb == null) backCb = BackCompat.register(this, this::showHome);
         else if (!need && backCb != null) { BackCompat.unregister(this, backCb); backCb = null; }
     }

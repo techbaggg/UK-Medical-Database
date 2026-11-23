@@ -9,3 +9,4 @@
 -keep class com.drgenz.UkDmDInitialImportWorker { *; }
 -keep class com.drgenz.UkDmDSqlite { *; }
 -keep class com.drgenz.MainActivity { *; }
+-keep class com.drgenz.BackCompat { *; }
