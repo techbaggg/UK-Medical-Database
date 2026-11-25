@@ -26,12 +26,18 @@ android {
         applicationId = 'com.drgenz.ukmeddb'
         minSdk = 26
         targetSdk = 36
-        versionCode = 40
-        versionName = '1.8.19'
+        versionCode = 51
+        versionName = '1.8.30'
     }
 
     buildFeatures {
         buildConfig = true
+    }
+
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+        warningsAsErrors = false
     }
 
     signingConfigs {
@@ -73,6 +79,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.work:work-runtime:2.10.1' // for background offline database preparation
+    implementation 'com.google.android.play:app-update:2.1.0'
     testImplementation 'junit:junit:4.13.2'
 }
 

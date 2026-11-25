@@ -41,10 +41,16 @@ public class MainActivity extends Activity {
             askWarmTts();
             UkDmDManager.schedule(this);
             showHome();
+            AppUpdateHelper.checkForAppUpdate(this, null);
         } catch (Throwable t) {
             android.util.Log.e("DrGenZ", "Error in UK onCreate", t);
             showHome();
         }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        AppUpdateHelper.onResume(this);
     }
 
     // ---------------- Main Screen ----------------
@@ -76,18 +82,29 @@ public class MainActivity extends Activity {
         subTitle.setTextColor(getColor(R.color.muted));
         brandBox.addView(subTitle);
 
+        TextView verBadge = tv("Version " + BuildConfig.VERSION_NAME + " (Build " + BuildConfig.VERSION_CODE + ")", 12);
+        verBadge.setTypeface(null, 1);
+        verBadge.setGravity(Gravity.CENTER);
+        verBadge.setTextColor(navy);
+        verBadge.setPadding(0, dp(2), 0, dp(4));
+        brandBox.addView(verBadge);
+
         body.addView(brandBox);
 
         // Primary Search Navigation Tile
         int h = dp(isPhone() ? 120 : 138);
         LinearLayout row1 = new LinearLayout(this); row1.setOrientation(LinearLayout.HORIZONTAL);
         row1.addView(menuTile("🇬🇧", "UK Medicines Database (NHS dm+d)", 0xFF283593, 0xFFFFFFFF, v -> ukMedicineDatabaseSearch()), new LinearLayout.LayoutParams(-1, h));
-        body.addView(row1);
+        LinearLayout.LayoutParams lpRow1 = new LinearLayout.LayoutParams(-1, -2);
+        lpRow1.setMargins(0, 0, 0, dp(10));
+        body.addView(row1, lpRow1);
 
         // Help & About Combined Tile
         LinearLayout row2 = new LinearLayout(this); row2.setOrientation(LinearLayout.HORIZONTAL);
         row2.addView(menuTile("ℹ️", "Help & About", 0xFF00838F, 0xFFFFFFFF, v -> helpAndAboutScreen()), new LinearLayout.LayoutParams(-1, dp(isPhone() ? 84 : 96)));
-        body.addView(row2);
+        LinearLayout.LayoutParams lpRow2 = new LinearLayout.LayoutParams(-1, -2);
+        lpRow2.setMargins(0, 0, 0, dp(10));
+        body.addView(row2, lpRow2);
 
         // Feature overview
         body.addView(section("Search Features"));
@@ -123,6 +140,12 @@ public class MainActivity extends Activity {
         c.addView(linkLine("Website: DrGenz.info", new Intent(Intent.ACTION_VIEW, Uri.parse(CONTACT_WEBSITE_INFO))));
         c.addView(linkLine("Author: " + CONTACT_WEBSITE, new Intent(Intent.ACTION_VIEW, Uri.parse(CONTACT_WEBSITE))));
 
+        TextView ver = tv("Version " + BuildConfig.VERSION_NAME + " (Build " + BuildConfig.VERSION_CODE + ")", 12);
+        ver.setGravity(Gravity.CENTER);
+        ver.setTextColor(getColor(R.color.muted));
+        ver.setPadding(0, 0, 0, dp(4));
+        c.addView(ver);
+
         TextView copy = tv("© 2026 " + CONTACT_NAME + ". All rights reserved.", 13);
         copy.setGravity(Gravity.CENTER);
         copy.setPadding(0, dp(4), 0, dp(2));
@@ -142,6 +165,7 @@ public class MainActivity extends Activity {
     void helpAndAboutScreen() {
         shell("Help & About");
         body.addView(section("About UK Medical Database"));
+        body.addView(tv("Version " + BuildConfig.VERSION_NAME + " (Build " + BuildConfig.VERSION_CODE + ")", 13));
         body.addView(tv("UK Medical Database is an offline clinical reference tool containing the official NHSBSA dm+d (Dictionary of Medicines and Devices) catalogue.", 14));
 
         body.addView(section("NHS dm+d Content"));
@@ -259,6 +283,12 @@ public class MainActivity extends Activity {
 
     @Override protected void onActivityResult(int r, int code, Intent data) {
         super.onActivityResult(r, code, data);
+        if (r == AppUpdateHelper.REQ_CODE_APP_UPDATE) {
+            if (code != RESULT_OK) {
+                android.util.Log.d("DrGenZ", "In-app update result: " + code);
+            }
+            return;
+        }
         if (r == REQ_GOOGLE_SPEECH && code == RESULT_OK && data != null) {
             ArrayList<String> values = data.getStringArrayListExtra(android.speech.RecognizerIntent.EXTRA_RESULTS);
             if (values != null && !values.isEmpty()) {
@@ -338,9 +368,12 @@ public class MainActivity extends Activity {
 
     Button btn(String text) {
         Button b = new Button(this); b.setText(text); b.setTextSize(15);
-        b.setTextColor(Color.WHITE); b.setBackgroundColor(teal);
+        b.setTextColor(Color.WHITE);
         GradientDrawable g = new GradientDrawable(); g.setColor(teal); g.setCornerRadius(dp(8));
         b.setBackground(g); b.setPadding(dp(12), dp(8), dp(12), dp(8));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+        lp.setMargins(0, dp(6), 0, dp(6));
+        b.setLayoutParams(lp);
         return b;
     }
 
