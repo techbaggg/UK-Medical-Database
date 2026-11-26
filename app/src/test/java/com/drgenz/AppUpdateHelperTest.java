@@ -12,7 +12,7 @@ public class AppUpdateHelperTest {
                 "  \"latestVersionCode\": 51,\n" +
                 "  \"minRequiredVersionCode\": 40,\n" +
                 "  \"versionName\": \"1.8.30\",\n" +
-                "  \"updateMessage\": \"New NHS dm+d records updated.\",\n" +
+                "  \"updateMessage\": \"New UK medicine records updated.\",\n" +
                 "  \"playStoreUrl\": \"https://play.google.com/store/apps/details?id=com.drgenz.ukmeddb\",\n" +
                 "  \"websiteUrl\": \"https://drgenz.info\"\n" +
                 "}";
@@ -22,7 +22,7 @@ public class AppUpdateHelperTest {
         assertEquals(51, cfg.latestVersionCode);
         assertEquals(40, cfg.minRequiredVersionCode);
         assertEquals("1.8.30", cfg.versionName);
-        assertEquals("New NHS dm+d records updated.", cfg.updateMessage);
+        assertEquals("New UK medicine records updated.", cfg.updateMessage);
         assertEquals("https://play.google.com/store/apps/details?id=com.drgenz.ukmeddb", cfg.playStoreUrl);
         assertEquals("https://drgenz.info", cfg.websiteUrl);
     }

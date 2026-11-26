@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         headerTitle.setTextColor(teal);
         brandBox.addView(headerTitle);
 
-        TextView subTitle = tv("Inbuilt NHS dm+d Medicines & Devices Reference", 14);
+        TextView subTitle = tv("Inbuilt UK Medicines & Formulations Reference", 14);
         subTitle.setGravity(Gravity.CENTER);
         subTitle.setTextColor(getColor(R.color.muted));
         brandBox.addView(subTitle);
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
         // Primary Search Navigation Tile
         int h = dp(isPhone() ? 120 : 138);
         LinearLayout row1 = new LinearLayout(this); row1.setOrientation(LinearLayout.HORIZONTAL);
-        row1.addView(menuTile("🇬🇧", "UK Medicines Database (NHS dm+d)", 0xFF283593, 0xFFFFFFFF, v -> ukMedicineDatabaseSearch()), new LinearLayout.LayoutParams(-1, h));
+        row1.addView(menuTile("💊", "UK Medicines Database", 0xFF283593, 0xFFFFFFFF, v -> ukMedicineDatabaseSearch()), new LinearLayout.LayoutParams(-1, h));
         LinearLayout.LayoutParams lpRow1 = new LinearLayout.LayoutParams(-1, -2);
         lpRow1.setMargins(0, 0, 0, dp(10));
         body.addView(row1, lpRow1);
@@ -108,18 +108,18 @@ public class MainActivity extends Activity {
 
         // Feature overview
         body.addView(section("Search Features"));
-        body.addView(tv("• UK NHS dm+d (Dictionary of Medicines and Devices) official terminology\n"
+        body.addView(tv("• Comprehensive UK medicinal products and devices catalogue\n"
                 + "• Virtual Medicinal Products (VMP) & Actual Medicinal Products (AMP)\n"
                 + "• Packs (VMPP, AMPP), Ingredients & Virtual Therapeutic Moieties (VTM)\n"
                 + "• Search by brand name, proprietary name, or active chemical substance\n"
-                + "• Official NHS SNOMED CT identifiers and mapping codes\n"
+                + "• Clinical identification codes and terminology mappings\n"
                 + "• Spoken or typed queries with Voice Assistant", 14));
 
-        body.addView(section("Offline NHS Clinical Terminology"));
-        body.addView(tv("All NHS dm+d records are pre-compiled and bundled inside the application. No internet connection is needed for catalogue lookups (internet is only required if using Google Voice Recognition).", 13));
+        body.addView(section("Offline UK Clinical Terminology"));
+        body.addView(tv("All medicine details, packs, and formulations are pre-compiled and bundled inside the application. No internet connection is needed for catalogue lookups (internet is only required if using Google Voice Recognition).", 13));
 
         body.addView(section("Important Clinical Disclaimer"));
-        body.addView(tv("The UK dm+d is a medicine terminology and identification resource, not a complete source of prescribing advice, dosage, side-effects, or contraindications. Missing data must never be interpreted as an absence of risk. Always check official BNF prescribing guidelines and consult a registered medical practitioner.", 13));
+        body.addView(tv("This application is an independent medicine terminology and identification resource, not affiliated with or endorsed by any government entity, the NHS, or dm+d. It is not a complete source of prescribing advice, dosage, side-effects, or contraindications. Always consult a registered medical practitioner and official prescribing references.", 13));
 
         body.addView(section("Developer & Contact Information"));
         body.addView(mainContactBox());
@@ -166,9 +166,9 @@ public class MainActivity extends Activity {
         shell("Help & About");
         body.addView(section("About UK Medical Database"));
         body.addView(tv("Version " + BuildConfig.VERSION_NAME + " (Build " + BuildConfig.VERSION_CODE + ")", 13));
-        body.addView(tv("UK Medical Database is an offline clinical reference tool containing the official NHSBSA dm+d (Dictionary of Medicines and Devices) catalogue.", 14));
+        body.addView(tv("UK Medical Database is an independent offline clinical reference tool providing comprehensive details on UK medicines, active substances, formulations, and packaging.", 14));
 
-        body.addView(section("NHS dm+d Content"));
+        body.addView(section("Medicinal Products & Content"));
         body.addView(tv("• Actual Medicinal Product (AMP): Manufactured medicinal product available in the UK.\n"
                 + "• Actual Medicinal Product Pack (AMPP): Specific pack size of an AMP.\n"
                 + "• Virtual Medicinal Product (VMP): Generic title representing active ingredient and strength.\n"
@@ -178,7 +178,10 @@ public class MainActivity extends Activity {
         body.addView(section("Searching & Voice Assistant"));
         body.addView(tv("• Type at least 3 letters of a product or generic name and tap 'Search' or 'Type and Ask'.\n"
                 + "• Tap the 🎙 Voice Assistant button to ask by voice hands-free.\n"
-                + "• Select any result to view its NHS identifier code and complete entry details read aloud.", 14));
+                + "• Select any result to view its clinical identifier code and complete entry details read aloud.", 14));
+
+        body.addView(section("Non-Affiliation Notice"));
+        body.addView(tv("UK Medical Database is independently developed and published. It is NOT affiliated with, sponsored by, or endorsed by the National Health Service (NHS), NHSBSA, or the Dictionary of Medicines and Devices (dm+d). All trademarks belong to their respective holders.", 13));
 
         body.addView(section("Important Disclaimer"));
         body.addView(tv("The catalogue does not supply complete clinical dosage, side-effect, contraindication or interaction information. It is provided for reference and educational use only.", 14));
@@ -195,8 +198,8 @@ public class MainActivity extends Activity {
 
     void ukMedicineDatabaseSearch() {
         shell("UK Medicines Database");
-        body.addView(section("UK NHS Medicines & Devices"));
-        body.addView(tv("Search the offline NHS dm+d reference dictionary.", 14));
+        body.addView(section("UK Medicines & Formulations"));
+        body.addView(tv("Search the offline UK clinical reference dictionary.", 14));
         body.addView(tv("Internet is required only for voice recognition.", 13));
 
         final EditText q = input("Search UK medicine / brand / ingredient (3+ letters)");
@@ -228,7 +231,7 @@ public class MainActivity extends Activity {
             return;
         }
         ukMedicineResults.removeAllViews();
-        ukMedicineResults.addView(tv("Searching UK NHS dm+d catalogue…", 13));
+        ukMedicineResults.addView(tv("Searching UK medicines catalogue…", 13));
 
         catalogExec.execute(() -> {
             List<Map<String, String>> hits = UkDmDManager.search(MainActivity.this, term, 60);
@@ -236,7 +239,7 @@ public class MainActivity extends Activity {
                 if (isFinishing() || isDestroyed() || ukMedicineResults == null) return;
                 ukMedicineResults.removeAllViews();
                 if (hits.isEmpty()) {
-                    String noMatch = "No matching UK dm+d entries found for \"" + term + "\".";
+                    String noMatch = "No matching UK medicine entries found for \"" + term + "\".";
                     ukMedicineResults.addView(tv(noMatch, 14));
                     if (speakResults) askSay(noMatch);
                     return;
@@ -250,9 +253,9 @@ public class MainActivity extends Activity {
                     final String table = hit.getOrDefault("table", "");
                     final String code = hit.getOrDefault("code", "");
                     final String detail = "Entry type: " + UkDmDManager.tableLabel(table)
-                            + "\nNHS Code: " + code
+                            + "\nClinical Code: " + code
                             + (desc.isEmpty() ? "" : "\nDescription: " + desc)
-                            + "\n\nNote: The NHS dm+d is a product-identification resource. Always check approved prescribing product information for complete clinical guidance.";
+                            + "\n\nNote: This is an independent product-identification resource. Always check approved prescribing product information for complete clinical guidance.";
                     View.OnClickListener open = x -> {
                         AlertDialog dlg = new AlertDialog.Builder(MainActivity.this)
                                 .setTitle(name).setMessage(detail).setPositiveButton("Close", null)

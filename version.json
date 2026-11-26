@@ -1,8 +1,8 @@
 {
-  "latestVersionCode": 51,
+  "latestVersionCode": 52,
   "minRequiredVersionCode": 40,
-  "versionName": "1.8.30",
-  "updateMessage": "A new version of UK Medical Database (NHS dm+d) is available with in-app update checks, main screen version display, and performance enhancements.",
+  "versionName": "1.8.31",
+  "updateMessage": "A new version of UK Medical Database is available with independent clinical terminology, main screen version display, and performance enhancements.",
   "playStoreUrl": "https://play.google.com/store/apps/details?id=com.drgenz.ukmeddb",
   "websiteUrl": "https://drgenz.info"
 }

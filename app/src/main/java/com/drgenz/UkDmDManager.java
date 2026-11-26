@@ -33,7 +33,7 @@ public final class UkDmDManager {
         SharedPreferences p = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         String release = p.getString("release", "Release 11.1.0");
         String date = p.getString("release_date", "2026-11-09");
-        return "NHS dm+d item 24 + item 25: " + release + " (" + date + ") · bundled offline catalogue";
+        return "UK Medicines Catalogue: " + release + " (" + date + ") · bundled offline catalogue";
     }
 
     public static List<Map<String, String>> search(Context context, String query, int limit) {
@@ -57,7 +57,7 @@ public final class UkDmDManager {
         if ("tf".equals(table)) return "Trade Family";
         if ("tfg".equals(table)) return "Trade Family Group";
         if ("vtm_ing".equals(table)) return "VTM ingredient relationship";
-        if ("history".equals(table)) return "Historic dm+d code";
-        return "NHS dm+d terminology";
+        if ("history".equals(table)) return "Historic clinical code";
+        return "Clinical terminology";
     }
 }

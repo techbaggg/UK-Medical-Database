@@ -26,8 +26,8 @@ android {
         applicationId = 'com.drgenz.ukmeddb'
         minSdk = 26
         targetSdk = 36
-        versionCode = 51
-        versionName = '1.8.30'
+        versionCode = 52
+        versionName = '1.8.31'
     }
 
     buildFeatures {

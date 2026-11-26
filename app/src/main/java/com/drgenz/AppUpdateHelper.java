@@ -22,7 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Manages in-app update checks for UK Medical Database (NHS dm+d) using a dual-tier strategy:
+ * Manages in-app update checks for UK Medical Database using a dual-tier strategy:
  * 1. Google Play In-App Updates API (official Play Core method for Google Play releases).
  * 2. Custom remote JSON version check fallback (for sideloaded builds, Amazon Appstore, or non-GMS devices).
  */
@@ -50,7 +50,7 @@ public final class AppUpdateHelper {
             this.minRequiredVersionCode = minRequiredVersionCode;
             this.versionName = (versionName == null) ? "" : versionName;
             this.updateMessage = (updateMessage == null || updateMessage.trim().isEmpty())
-                    ? "A new update is available with updated NHS dm+d records and performance enhancements."
+                    ? "A new update is available with updated UK medicine records and performance enhancements."
                     : updateMessage;
             this.playStoreUrl = (playStoreUrl == null || playStoreUrl.trim().isEmpty())
                     ? "https://play.google.com/store/apps/details?id=com.drgenz.ukmeddb"
